@@ -1,26 +1,115 @@
 @import "tailwindcss";
 
+/* ---- Rang (dark = raat ka aasman) ---- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --night: #05070d;
+  --midnight: #0e1524;
+  --dusk: #5f6e8a;
+  --sky: #5aa9ff;
+  --moon: #f3eee0;
 }
 
+/* ---- Light mode = din ka aasman ---- */
+[data-theme="light"] {
+  --night: #eef5ff; /* din ka halka aasmani background */
+  --midnight: #dbe9fb;
+  --dusk: #5f6e8a;
+  --sky: #1f6fe0; /* gehra neela taake text saaf parhay */
+  --moon: #0b1220; /* text ab gehra */
+}
+
+/* Tailwind classes (bg-night, text-moon waghera) in variables se chalengi */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-night: var(--night);
+  --color-midnight: var(--midnight);
+  --color-dusk: var(--dusk);
+  --color-sky: var(--sky);
+  --color-moon: var(--moon);
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background-color: var(--night);
+  transition: background-color 0.4s ease;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: transparent; /* taake sitare nazar aayen */
+  color: var(--moon);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--sky);
+  color: var(--night);
+}
+
+:focus-visible {
+  outline: 2px solid var(--sky);
+  outline-offset: 3px;
+}
+
+/* ---- Lenis required styles ---- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Custom cursor ke saath asli cursor chhupao */
+html.has-cursor,
+html.has-cursor a,
+html.has-cursor button {
+  cursor: none;
+}
+
+/* ---- Sitaron wali parat (dark mode) ---- */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* content ke peeche, background ke upar */
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 12% 18%, rgba(243, 238, 224, 1), transparent),
+    radial-gradient(1.5px 1.5px at 78% 12%, rgba(243, 238, 224, 0.9), transparent),
+    radial-gradient(2.5px 2.5px at 35% 62%, rgba(243, 238, 224, 1), transparent),
+    radial-gradient(1.5px 1.5px at 88% 70%, rgba(243, 238, 224, 0.8), transparent),
+    radial-gradient(2px 2px at 55% 35%, rgba(243, 238, 224, 0.9), transparent),
+    radial-gradient(2px 2px at 22% 85%, rgba(243, 238, 224, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 66% 88%, rgba(243, 238, 224, 0.9), transparent),
+    radial-gradient(2px 2px at 92% 40%, rgba(243, 238, 224, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 6% 52%, rgba(243, 238, 224, 0.9), transparent),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(90, 169, 255, 0.16), transparent);
+}
+
+/* Light mode: sitare nahi, upar se din ki roshni */
+html[data-theme="light"]::before {
+  background-image: radial-gradient(
+    ellipse 90% 60% at 50% 0%,
+    rgba(31, 111, 224, 0.18),
+    transparent
+  );
+}
+
+/* ---- Cursor dot ka rang ---- */
+.cursor-dot {
+  background: var(--moon); /* dark mein cream, light mein gehra */
+  transition: background-color 0.25s ease;
+}
+
+/* Sky-blue jagah par (menu ka right panel) */
+.cursor-dot.on-sky {
+  background: var(--night);
 }
