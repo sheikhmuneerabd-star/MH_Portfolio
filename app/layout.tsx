@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { siteUrl } from "@/lib/site";
 import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -21,9 +22,32 @@ const manrope = Manrope({
   display: "swap",
 });
 
+const { profile, socials } = portfolio;
+const title = `${profile.name} | ${profile.role}`;
+
 export const metadata: Metadata = {
-  title: `${portfolio.profile.name} | ${portfolio.profile.role}`,
-  description: portfolio.profile.bio,
+  metadataBase: new URL(siteUrl),
+  title,
+  description: profile.bio,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: profile.name,
+    title,
+    description: profile.bio,
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image", title, description: profile.bio },
+  robots: { index: true, follow: true },
+};
+
+// Browser ki bar ka rang theme ke hisab se
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#05070d" },
+    { media: "(prefers-color-scheme: light)", color: "#eef5ff" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -42,6 +66,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-sky focus:px-5 focus:py-3 focus:font-semibold focus:text-night"
+        >
+          Skip to content
+        </a>
+
+        {/* Google ke liye: ye insaan kaun hai */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: profile.name,
+              jobTitle: profile.role,
+              url: siteUrl,
+              sameAs: socials.filter((s) => s.type !== "email").map((s) => s.href),
+            }),
+          }}
+        />
+
         <SmoothScroll>
           <PageTransition>
             <Header />

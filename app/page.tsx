@@ -7,7 +7,7 @@ import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
-    <main>
+    <main id="main" tabIndex={-1} className="outline-none">
       <Hero />
       <About />
       <Services />

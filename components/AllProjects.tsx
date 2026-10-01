@@ -25,7 +25,7 @@ export default function AllProjects() {
   return (
     // reducedMotion="user": jin ke device mein animation band hai unke liye bhi theek
     <MotionConfig reducedMotion="user">
-      <main className="px-5 pb-24 pt-32 md:px-10 md:pt-40">
+      <main id="main" tabIndex={-1} className="px-5 pb-24 pt-32 md:px-10 md:pt-40">
         <p className="mb-4 text-sm uppercase tracking-[0.3em] text-sky">Archive</p>
         <h1
           className="font-display leading-[0.95]"

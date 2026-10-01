@@ -37,6 +37,7 @@ const socialIn = {
 
 export default function MenuOverlay({ open, onClose, onNavigate, onExited }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   // Scroll lock + ESC
   useEffect(() => {
@@ -45,7 +46,23 @@ export default function MenuOverlay({ open, onClose, onNavigate, onExited }: Pro
     getLenis()?.stop(); // Lenis band
     document.body.style.overflow = "hidden"; // Lenis na ho tab bhi lock
 
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+        const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") return onClose();
+      if (e.key !== "Tab") return;
+      const items = dialogRef.current?.querySelectorAll<HTMLElement>(
+        "a[href], button:not([disabled])"
+      );
+      if (!items || items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     window.addEventListener("keydown", onKey);
     closeRef.current?.focus();
 
@@ -60,6 +77,7 @@ export default function MenuOverlay({ open, onClose, onNavigate, onExited }: Pro
     <AnimatePresence onExitComplete={onExited}>
       {open && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label="Main menu"

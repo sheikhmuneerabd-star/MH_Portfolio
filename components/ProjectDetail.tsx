@@ -49,7 +49,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
   );
 
   return (
-    <main ref={root} className="px-5 pb-24 pt-32 md:px-10 md:pt-40">
+    <main ref={root} id="main" tabIndex={-1} className="px-5 pb-24 pt-32 md:px-10 md:pt-40">
       {/* Top: label, title, links */}
       <header>
         <p className="d-in text-sm uppercase tracking-[0.3em] text-sky">
