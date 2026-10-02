@@ -83,7 +83,7 @@ export default function Header() {
               <li key={s.type}>
                 <a
                   href={s.href}
-                  target={s.type === "email" ? undefined : "_blank"}
+                  target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-moon/20 text-moon transition-colors hover:border-sky hover:text-sky"

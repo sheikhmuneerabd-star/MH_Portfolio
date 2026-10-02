@@ -24,7 +24,7 @@ export const portfolio = {
   socials: [
     { type: "github", label: "GitHub", href: "https://github.com/sheikhmuneerabd-star" },
     { type: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/in/muneer-hussain-76a458439" },
-    { type: "email", label: "Email", href: "mailto:muhammadmuneer579@gmail.com" },
+    { type: "email", label: "Email", href: "https://mail.google.com/mail/?view=cm&fs=1&to=muhammadmuneer579@gmail.com&su=Hello%20from%20your%20portfolio" },
   ],
 
     hero: {
