@@ -1,29 +1,35 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { portfolio } from "@/data/portfolio";
 import { scrollToTarget } from "@/lib/lenis";
 import { useGoTo } from "@/hooks/useGoTo";
 import FillButton from "@/components/FillButton";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const root = useRef<HTMLElement>(null);
   const goTo = useGoTo();
+  const pathname = usePathname();
   const { profile, nav } = portfolio;
 
-  useGSAP(
+    useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      // Bara naam scroll ke saath neeche se upar aata hai
+
       gsap.from(".f-name", {
-        yPercent: 45,
-        opacity: 0.2,
-        ease: "none",
-        scrollTrigger: { trigger: root.current, start: "top 90%", end: "bottom bottom", scrub: true },
+        yPercent: 60,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out",
+        scrollTrigger: { trigger: root.current, start: "top 85%", once: true },
       });
+
+      // Naye page ki height set hone ke baad dobara napo
+      gsap.delayedCall(0.4, () => ScrollTrigger.refresh());
     },
-    { scope: root }
+    { scope: root, dependencies: [pathname], revertOnUpdate: true }
   );
 
   return (

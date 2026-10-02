@@ -1,15 +1,25 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import type { Project } from "@/data/portfolio";
 import FillButton from "@/components/FillButton";
 import ProjectImage from "@/components/ProjectImage";
 import { usePageTransition } from "@/components/PageTransition";
+import { AnimatePresence } from "framer-motion";
+import ImageLightbox from "@/components/ImageLightbox";
 
 export default function ProjectDetail({ project }: { project: Project }) {
   const root = useRef<HTMLElement>(null);
   const { go } = usePageTransition();
+  const [open, setOpen] = useState<number | null>(null);
+    // -1 = cover image, 0,1,2... = gallery ki images
+  const current =
+    open === null
+      ? null
+      : open === -1
+      ? { src: project.image, caption: `${project.title} cover` }
+      : project.gallery[open];
 
   useGSAP(
     () => {
@@ -62,20 +72,41 @@ export default function ProjectDetail({ project }: { project: Project }) {
           {project.title}
         </h1>
         <div className="d-in mt-8 flex flex-wrap gap-3">
-          <FillButton variant="solid" href={project.live}>Live Demo</FillButton>
+          {project.live && <FillButton variant="solid" href={project.live}>Live Demo</FillButton>}
           <FillButton href={project.github}>GitHub</FillButton>
         </div>
       </header>
 
-      {/* Cover image */}
-      <div className="d-in relative mt-12 aspect-[16/9] overflow-hidden rounded-[2rem] md:mt-20 md:rounded-[3rem]">
-        <ProjectImage
-          src={project.image}
-          alt={`${project.title} cover`}
-          label={project.title}
-          priority
-          sizes="100vw"
-        />
+      {/* Cover image: hover par "View full", click par poori image */}
+      <div className="d-in mt-12 md:mt-20">
+        <button
+          type="button"
+          onClick={() => setOpen(-1)}
+          aria-label={`View full image: ${project.title} cover`}
+          className="group relative block w-full text-left"
+        >
+          <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] md:rounded-[3rem]">
+            <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
+              <ProjectImage
+                src={project.image}
+                alt={`${project.title} cover`}
+                label={project.title}
+                priority
+                sizes="100vw"
+              />
+            </div>
+
+            <div className="absolute inset-0 flex items-center justify-center bg-night/40 opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100">
+              <span className="flex items-center gap-2 rounded-full bg-moon px-5 py-3 text-sm font-semibold text-night shadow-xl transition-transform duration-300 md:translate-y-3 md:group-hover:translate-y-0 md:group-focus-visible:translate-y-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                  strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                  <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+                </svg>
+                View full
+              </span>
+            </div>
+          </div>
+        </button>
       </div>
 
       {/* Overview + What I built */}
@@ -119,24 +150,50 @@ export default function ProjectDetail({ project }: { project: Project }) {
         </ul>
       </section>
 
-        {/* Gallery: saari images ek hi section mein */}
+      {/* Gallery: card par hover karein, click se poori image khulegi */}
       {project.gallery.length > 0 && (
         <section className="mt-20 md:mt-32">
           <h2 className="mb-8 font-display text-3xl md:text-4xl">More Screens</h2>
-          <div className="grid gap-10 md:grid-cols-2 md:gap-14">
+          <div
+            className={`grid gap-10 md:gap-14 ${
+              project.gallery.length > 1 ? "md:grid-cols-2" : ""
+            }`}
+          >
             {project.gallery.map((g, i) => (
               <figure key={g.caption} className={i % 2 ? "md:mt-24" : ""}>
-                <div className="g-card relative aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
-                  <div className="g-card-img absolute -inset-y-[10%] inset-x-0">
-                    <ProjectImage
-                      src={g.src}
-                      alt={g.caption}
-                      label={g.caption}
-                      index={i + 1}
-                      sizes="(min-width: 768px) 45vw, 90vw"
-                    />
+                <button
+                  type="button"
+                  onClick={() => setOpen(i)}
+                  aria-label={`View full image: ${g.caption}`}
+                  className="group relative block w-full text-left"
+                >
+                  <div className="g-card relative aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
+                    {/* Parallax wala wrapper (GSAP isi ko hilata hai) */}
+                    <div className="g-card-img absolute -inset-y-[10%] inset-x-0">
+                      {/* Hover zoom alag wrapper mein, taake GSAP se na takraye */}
+                      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
+                        <ProjectImage
+                          src={g.src}
+                          alt={g.caption}
+                          label={g.caption}
+                          index={i + 1}
+                          sizes="(min-width: 768px) 45vw, 90vw"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Beech mein "View full" button */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-night/40 opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100">
+                      <span className="flex items-center gap-2 rounded-full bg-moon px-5 py-3 text-sm font-semibold text-night shadow-xl transition-transform duration-300 md:translate-y-3 md:group-hover:translate-y-0 md:group-focus-visible:translate-y-0">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                          strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                          <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+                        </svg>
+                        View full
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </button>
                 <figcaption className="mt-4 text-sm text-moon/60">{g.caption}</figcaption>
               </figure>
             ))}
@@ -147,7 +204,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
       {/* Bottom buttons */}
       <div className="mt-24 flex flex-wrap items-center justify-between gap-6 border-t border-moon/15 pt-10">
         <div className="flex flex-wrap gap-3">
-          <FillButton href={project.live}>Live Demo</FillButton>
+          {project.live && <FillButton href={project.live}>Live Demo</FillButton>}
           <FillButton href={project.github}>GitHub</FillButton>
         </div>
         <FillButton
@@ -161,6 +218,17 @@ export default function ProjectDetail({ project }: { project: Project }) {
           Go Back Home
         </FillButton>
       </div>
+
+      <AnimatePresence>
+        {current && (
+          <ImageLightbox
+            key={open}
+            src={current.src}
+            caption={current.caption}
+            onClose={() => setOpen(null)}
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 }

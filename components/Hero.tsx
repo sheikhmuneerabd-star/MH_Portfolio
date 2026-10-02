@@ -53,8 +53,14 @@ export default function Hero() {
         ))}
       </h1>
 
-      {/* 2) Portrait: beech mein (z-10) */}
-      <div className="h-portrait relative z-10 mx-auto h-[55vh] w-full max-w-md lg:h-[78vh]">
+        {/* 2) Portrait: beech mein (z-10), neeche se halka fade */}
+      <div
+        className="h-portrait relative z-10 mx-auto h-[55vh] w-full max-w-md lg:h-[90vh]"
+        style={{
+          WebkitMaskImage: "linear-gradient(to bottom, #000 72%, transparent 100%)",
+          maskImage: "linear-gradient(to bottom, #000 85%, transparent 100%)",
+        }}
+      >
         <Image
           src={profile.portrait}
           alt={`${profile.name} portrait`}

@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { setLenis } from "@/lib/lenis";
+import { getLenis, setLenis } from "@/lib/lenis";
 
-/**
- * Lenis smooth scroll + GSAP ticker integration.
- * prefers-reduced-motion ho to Lenis band rahega.
- */
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  // Lenis sirf ek baar banta hai, poori site par
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
@@ -20,11 +20,8 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       smoothWheel: true,
     });
     setLenis(lenis);
-
-    // Lenis scroll par ScrollTrigger ko update karo
     lenis.on("scroll", ScrollTrigger.update);
 
-    // Lenis ko GSAP ke ticker se chalao (ek hi animation loop)
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
@@ -35,6 +32,15 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       setLenis(null);
     };
   }, []);
+
+  // Page badalne par nayi height napo
+  useEffect(() => {
+    const t = setTimeout(() => {
+      getLenis()?.resize();
+      ScrollTrigger.refresh();
+    }, 150);
+    return () => clearTimeout(t);
+  }, [pathname]);
 
   return <>{children}</>;
 }

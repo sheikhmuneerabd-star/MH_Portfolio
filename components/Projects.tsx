@@ -90,7 +90,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           >
             See Details
           </FillButton>
-          <FillButton href={project.live}>Live Demo</FillButton>
+          {project.live && <FillButton href={project.live}>Live Demo</FillButton>}
           <FillButton href={project.github}>GitHub</FillButton>
         </div>
       </div>
