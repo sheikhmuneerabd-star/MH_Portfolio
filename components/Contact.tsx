@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { portfolio } from "@/data/portfolio";
+import { portfolio, gmailLink, whatsappLink } from "@/data/portfolio";
 import ContactForm from "@/components/ContactForm";
 import { SocialIcon, MailIcon, PhoneIcon } from "@/components/Icons";
 
@@ -55,18 +55,23 @@ export default function Contact() {
 
           <div className="c-fade mt-10 space-y-4">
             <a
-              href={`mailto:${profile.email}`}
+              href={gmailLink(profile.email)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-4 font-display text-2xl underline-offset-8 transition-colors hover:text-sky hover:underline md:text-4xl"
             >
               <MailIcon className="h-7 w-7 shrink-0" />
               <span className="break-all">{profile.email}</span>
             </a>
             <a
-              href={`tel:${profile.phone.replace(/\s/g, "")}`}
+              href={whatsappLink(profile.whatsapp)}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat on WhatsApp"
               className="flex items-center gap-4 font-display text-2xl underline-offset-8 transition-colors hover:text-sky hover:underline md:text-4xl"
             >
               <PhoneIcon className="h-7 w-7 shrink-0" />
-              {profile.phone}
+              {profile.whatsapp}
             </a>
           </div>
 

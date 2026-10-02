@@ -37,6 +37,7 @@ type Props = {
   className?: string;
   disabled?: boolean;
   "aria-label"?: string;
+  download?: boolean | string;
 };
 
 export default function FillButton({
@@ -47,6 +48,7 @@ export default function FillButton({
   variant = "outline",
   className = "",
   disabled,
+  download,
   ...rest
 }: Props) {
   const elRef = useRef<HTMLElement>(null);
@@ -154,6 +156,20 @@ export default function FillButton({
   };
 
   if (href) {
+        // Download wala link: Next.js Link nahi, seedha <a download>
+    if (download) {
+      return (
+        <a
+          {...common}
+          ref={elRef as React.RefObject<HTMLAnchorElement>}
+          href={href}
+          download={typeof download === "string" ? download : true}
+        >
+          {inner}
+        </a>
+      );
+    }
+
     const external = /^https?:\/\//.test(href);
     if (external) {
       return (

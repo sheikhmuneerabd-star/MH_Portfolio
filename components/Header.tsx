@@ -110,7 +110,12 @@ export default function Header() {
             ))}
           </button>
 
-          <FillButton href={portfolio.profile.cv} variant="solid" className="!px-5 !py-2.5">
+          <FillButton
+            href={portfolio.profile.cv}
+            download="Muneer-Hussain-CV.pdf"
+            variant="solid"
+            className="!px-5 !py-2.5"
+          >
             Download CV
           </FillButton>
         </div>

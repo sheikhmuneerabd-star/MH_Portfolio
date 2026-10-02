@@ -4,7 +4,7 @@ export const portfolio = {
     role: "Full Stack Developer",
     location: "Faisalabad, Pakistan",
     email: "muhammadmuneer579op@gmail.com", // apni email likhein
-    phone: "+92 3069110314", // apna number likhein
+    whatsapp: "923069110314", // apna number likhein
     bio: "I build fast, thoughtful web experiences from front to back.",
     cv: "/cv.pdf", // apna CV public/cv.pdf mein rakhein
     portrait: "/muneernew.png",
@@ -348,3 +348,11 @@ export type Social = (typeof portfolio.socials)[number];
 export type Project = Omit<(typeof portfolio.projects)[number], "live"> & {
   live?: string;
 };
+
+// Gmail compose link: To aur subject pehle se bhare
+export const gmailLink = (to: string, subject = "Hello from your portfolio") =>
+  `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}`;
+
+// WhatsApp chat link: pehla message pehle se likha hua
+export const whatsappLink = (number: string, text = "Hi Muneer, I saw your portfolio.") =>
+  `https://wa.me/${number}?text=${encodeURIComponent(text)}`;

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { portfolio } from "@/data/portfolio";
+import { gmailLink, portfolio, whatsappLink } from "@/data/portfolio";
 import { getLenis } from "@/lib/lenis";
 import { SocialIcon, PinIcon, MailIcon, PhoneIcon } from "@/components/Icons";
 
@@ -163,8 +163,9 @@ export default function MenuOverlay({ open, onClose, onNavigate, onExited }: Pro
                 <motion.li variants={socialIn} className="flex items-center gap-4">
                   <MailIcon className="h-6 w-6 shrink-0" />
                   <a
-                    href={`mailto:${portfolio.profile.email}`}
+                    href={gmailLink(portfolio.profile.email)}
                     className="break-all underline-offset-4 hover:underline"
+                    target="_blank" rel="noopener noreferrer"
                   >
                     {portfolio.profile.email}
                   </a>
@@ -172,10 +173,11 @@ export default function MenuOverlay({ open, onClose, onNavigate, onExited }: Pro
                 <motion.li variants={socialIn} className="flex items-center gap-4">
                   <PhoneIcon className="h-6 w-6 shrink-0" />
                   <a
-                    href={`tel:${portfolio.profile.phone.replace(/\s/g, "")}`}
+                    href={whatsappLink(portfolio.profile.whatsapp)}
                     className="underline-offset-4 hover:underline"
+                    target="_blank" rel="noopener noreferrer"
                   >
-                    {portfolio.profile.phone}
+                    {portfolio.profile.whatsapp}
                   </a>
                 </motion.li>
               </ul>
