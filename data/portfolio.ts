@@ -70,14 +70,7 @@ export const portfolio = {
       art: "ai",
       title: "AI / GenAI",
       description: "Chatbots, smart search and AI features added into real products.",
-      tech: ["OpenAI", "Claude API", "LangChain", "RAG", "Vector DB"],
-    },
-    {
-      num: "04",
-      art: "cloud",
-      title: "Cloud & DevOps",
-      description: "Deployments, CI/CD and hosting that keep your app fast and online.",
-      tech: ["Vercel", "AWS", "Docker", "GitHub Actions", "Linux"],
+      tech: ["OpenAI", "Claude API"],
     },
   ],
 
