@@ -97,7 +97,7 @@ export const portfolio = {
         "Role-based admin",
       ],
       github: "https://github.com/sheikhmuneerabd-star/xteamwear-frontend-next",
-      live: "https://bespoketeamwear.com",
+      live: "https://bespoketeamwear.vercel.app",
       image: "/bespokewear/bespoke.png",
       gallery: [
         { src: "/bespokewear/homenewpro.png", caption: "Store homepage with featured collections" },
